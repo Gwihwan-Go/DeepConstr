@@ -30,7 +30,7 @@ Welcome to the artifact repository of the DeepConstr paper which is accepted by 
 
 ### Bug Finding Evidence (RQ3)
 
-You can find the bug finding evidence [links to real-world bug reports](docs/bug_list.md).
+You can find the bug finding evidence [here](docs/bug_list.md).
 
 ### Get Ready
 
@@ -297,6 +297,14 @@ You can review the overall scores of constraints by executing the following scri
 You can look into the overall scores of constraints by running below scripts.
 ```bash
 python experiments/eval_constr.py
+#######  torch  ####### 
+#DeepConstr
+## Num of Sub Constraints :  7072 from 929 number of operators
+## Mean :  7.61248654467169  Median  6
+#DeepConstr^s
+## Num of Sub Constraints :  7540 from 855 number of operators
+## Mean :  8.818713450292398  Median  7
+#...
 ```
 This script will automatically gather the constraints from the  default locations(`/DeepConstr/data/records/`). The resulting plots will be saved at`/DeepConstr/results/5_dist_tf.png` for TensorFlow and `/DeepConstr/results/5_dist_torch.png` for PyTorch.
 
