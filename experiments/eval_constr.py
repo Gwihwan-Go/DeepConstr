@@ -131,14 +131,14 @@ def viz_f1(deepconstr_recall : List[float], deepconstr_prec, deepdeepconstr_s_re
     plt.scatter(deepconstr_prec, deepconstr_recall, alpha=0.8, edgecolors='black', label=r'\textsc{DeepConstr}', linewidth=0.6, s=80, c='red', marker='+')
     # plt.scatter(deepdeepconstr_s_prec, deepdeepconstr_s_recall, alpha=0.8, edgecolors='black', label=r'\textsc{DeepConstr$^{s}$}', linewidth=0.6, s=80, c='blue', marker='o')
     # plt.scatter(deepconstr_prec, deepconstr_recall, alpha=0.8, edgecolors='black', label=r'\textsc{DeepConstr}', linewidth=0.6, s=80, c='red', marker='o')
-    print("mean deepdeepconstr_s_prec", mean(deepdeepconstr_s_prec))
-    print("median deepdeepconstr_s_prec", statistics.median(deepdeepconstr_s_prec))
-    print("mean deepdeepconstr_s_recall", mean(deepdeepconstr_s_recall))
-    print("median deepdeepconstr_s_recall", statistics.median(deepdeepconstr_s_recall))
-    print("mean deepconstr_prec", mean(deepconstr_prec))
-    print("median deepconstr_prec", statistics.median(deepconstr_prec))
-    print("mean deepconstr_recall", mean(deepconstr_recall))
-    print("median deepconstr_recall", statistics.median(deepconstr_recall))
+    print("mean deepdeepconstr^s_soundness", mean(deepdeepconstr_s_prec))
+    print("median deepdeepconstr^s_soundness", statistics.median(deepdeepconstr_s_prec))
+    print("mean deepdeepconstr^s_completeness", mean(deepdeepconstr_s_recall))
+    print("median deepdeepconstr^s_completeness", statistics.median(deepdeepconstr_s_recall))
+    print("mean deepconstr_soundness", mean(deepconstr_prec))
+    print("median deepconstr_soundness", statistics.median(deepconstr_prec))
+    print("mean deepconstr_completeness", mean(deepconstr_recall))
+    print("median deepconstr_completeness", statistics.median(deepconstr_recall))
     # if name == "torch" :
     #     plt.title('\\textit{PyTorch}')
     # else :
@@ -157,31 +157,36 @@ def viz_f1(deepconstr_recall : List[float], deepconstr_prec, deepdeepconstr_s_re
 
 if __name__ == "__main__" : 
     record_dir = "/DeepConstr/data/"
-    frameworks = ["torch", "tf", "numpy"]
+    frameworks = ["torch", "tf"] #, "numpy"]
     kinds = ["records", "only_acc"]
 
     for framework in frameworks:
-        print(framework)
+        print("####### ", framework, " ####### ")
         data = []
         path = os.path.join(record_dir, "records", framework)
         deepdeepconstr_s_path = os.path.join(record_dir, "only_acc", framework)
         data_list = load_data(path)
+        
         deepdeepconstr_s_data_list = load_data(deepdeepconstr_s_path)
+        print("DeepConstr")
         deepconstr_stats, deepconstr_len, deepconstr_operator, deepconstr_f1, deepconstr_prec, deepconstr_recall = get_deepconstr_stats(data_list)
+        print("DeepConstr^s")
         deepdeepconstr_s_deepconstr_stats, deepdeepconstr_s_deepconstr_len, deepdeepconstr_s_deepconstr_operator, deepdeepconstr_s_deepconstr_f1, deepdeepconstr_s_deepconstr_prec, deepdeepconstr_s_deepconstr_recall = get_deepconstr_stats(deepdeepconstr_s_data_list)
 
-    for framework in frameworks:
-        data = []
-        path = os.path.join(record_dir, "records", framework)
-        deepdeepconstr_s_path = os.path.join(record_dir, "only_acc", framework)
-        data_list = load_data(path)
-        deepdeepconstr_s_data_list = load_data(deepdeepconstr_s_path)
-        deepconstr_stats, deepconstr_len, deepconstr_operator, deepconstr_f1, deepconstr_prec, deepconstr_recall = get_deepconstr_stats(data_list)
-        deepdeepconstr_s_deepconstr_stats, deepdeepconstr_s_deepconstr_len, deepdeepconstr_s_deepconstr_operator, deepdeepconstr_s_deepconstr_f1, deepdeepconstr_s_deepconstr_prec, deepdeepconstr_s_deepconstr_recall = get_deepconstr_stats(deepdeepconstr_s_data_list)
+        viz_f1(deepconstr_recall, deepconstr_prec, deepdeepconstr_s_deepconstr_recall, deepdeepconstr_s_deepconstr_prec, name=framework)
+    # for framework in frameworks:
+    #     data = []
+    #     path = os.path.join(record_dir, "records", framework)
+    #     deepdeepconstr_s_path = os.path.join(record_dir, "only_acc", framework)
+    #     data_list = load_data(path)
+    #     deepdeepconstr_s_data_list = load_data(deepdeepconstr_s_path)
+    #     print("DeepConstr")
+    #     deepconstr_stats, deepconstr_len, deepconstr_operator, deepconstr_f1, deepconstr_prec, deepconstr_recall = get_deepconstr_stats(data_list)
+    #     print("DeepConstr^s")
+    #     deepdeepconstr_s_deepconstr_stats, deepdeepconstr_s_deepconstr_len, deepdeepconstr_s_deepconstr_operator, deepdeepconstr_s_deepconstr_f1, deepdeepconstr_s_deepconstr_prec, deepdeepconstr_s_deepconstr_recall = get_deepconstr_stats(deepdeepconstr_s_data_list)
         # print("all")
         # viz_gen_way_of_constrs(deepconstr_stats)
         # print("only_acc")
         # viz_gen_way_of_constrs(deepdeepconstr_s_deepconstr_stats)
-        viz_f1(deepconstr_recall, deepconstr_prec, deepdeepconstr_s_deepconstr_recall, deepdeepconstr_s_deepconstr_prec, name=framework)
-        viz_passrate(data_list, deepdeepconstr_s_data_list, name=framework)
+        # viz_passrate(data_list, deepdeepconstr_s_data_list, name=framework)
         # print(pass_rate_num_of_constr)
